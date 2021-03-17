@@ -1,6 +1,7 @@
+import { StudentMiddleware } from './student.middleware';
 import { Student } from './entities/student.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { StudentService } from './student.service';
 import { StudentController } from './student.controller';
 
@@ -8,6 +9,23 @@ import { StudentController } from './student.controller';
   imports: [TypeOrmModule.forFeature([Student])],
   exports: [TypeOrmModule],
   controllers: [StudentController],
-  providers: [StudentService]
+  providers: [StudentService],
 })
-export class StudentModule { }
+export class StudentModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(StudentMiddleware).forRoutes(
+      {
+        path: 'students/:id',
+        method: RequestMethod.GET,
+      },
+      {
+        path: 'students/:id',
+        method: RequestMethod.DELETE,
+      },
+      {
+        path: 'students/:id',
+        method: RequestMethod.PATCH,
+      },
+    );
+  }
+}

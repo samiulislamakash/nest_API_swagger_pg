@@ -4,7 +4,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTeacherDto } from './dto/create-teacher.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
-  createOneOutput,
+  createOutput,
   deleteOutput,
   findOutput,
   updateOutput,
@@ -19,7 +19,7 @@ export class TeacherService {
 
   async create(createTeacherDto: CreateTeacherDto) {
     const payload = await this.teacherRepository.save(createTeacherDto);
-    return createOneOutput(payload);
+    return createOutput(payload);
   }
 
   async findAll() {

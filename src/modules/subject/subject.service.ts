@@ -4,7 +4,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateSubjectDto } from './dto/create-subject.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
-  createOneOutput,
+  createOutput,
   deleteOutput,
   findOutput,
   updateOutput,
@@ -19,7 +19,7 @@ export class SubjectService {
 
   async create(createSubjectDto: CreateSubjectDto) {
     const subject = await this.subjectRepository.save(createSubjectDto);
-    return createOneOutput(subject);
+    return createOutput(subject);
   }
 
   async findAll() {

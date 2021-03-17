@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateGradeDto } from './dto/create-grade.dto';
 import {
-  createOneOutput,
+  createOutput,
   deleteOutput,
   findOutput,
   updateOutput,
@@ -19,7 +19,7 @@ export class GradeService {
 
   async create(createGradeDto: CreateGradeDto) {
     const grade = await this.gradeRepository.save(createGradeDto);
-    return createOneOutput(grade);
+    return createOutput(grade);
   }
 
   async findAll() {
