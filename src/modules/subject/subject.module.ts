@@ -1,6 +1,7 @@
+import { SubjectMiddleware } from './subject.middleware';
 import { Subject } from './entities/subject.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { SubjectService } from './subject.service';
 import { SubjectController } from './subject.controller';
 
@@ -10,4 +11,14 @@ import { SubjectController } from './subject.controller';
   controllers: [SubjectController],
   providers: [SubjectService],
 })
-export class SubjectModule {}
+export class SubjectModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(SubjectMiddleware)
+      .forRoutes(
+        { path: 'subject/:id', method: RequestMethod.GET },
+        { path: 'subject/:id', method: RequestMethod.DELETE },
+        { path: 'subject/:id', method: RequestMethod.PATCH },
+      );
+  }
+}

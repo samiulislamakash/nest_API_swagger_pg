@@ -22,34 +22,28 @@ export class GradeService {
     return createOutput(grade);
   }
 
+  async bulkCreate(createGradeDto: CreateGradeDto[]) {
+    const grade = await this.gradeRepository.save(createGradeDto);
+    return createOutput(grade);
+  }
+
   async findAll() {
     const payload = await this.gradeRepository.find();
     return findOutput(payload);
   }
 
   async findOne(id: string) {
-    const isExists = await this.gradeRepository.findOne(id);
-    if (!isExists) {
-      throw new NotFoundException();
-    }
-    return findOutput(isExists);
+    const payload = await this.gradeRepository.findOne(id);
+    return findOutput(payload);
   }
 
   async update(id: string, updateGradeDto: CreateGradeDto) {
-    const isExists = await this.gradeRepository.findOne(id);
-    if (!isExists) {
-      throw new NotFoundException();
-    }
     await this.gradeRepository.update(id, updateGradeDto);
     const newData = await this.gradeRepository.findOne(id);
     return updateOutput(newData);
   }
 
   async remove(id: string) {
-    const isExists = await this.gradeRepository.findOne(id);
-    if (!isExists) {
-      throw new NotFoundException();
-    }
     const deletePayload = await this.gradeRepository.delete(id);
     return deleteOutput(deletePayload);
   }

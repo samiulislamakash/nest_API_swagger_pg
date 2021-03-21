@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { GradeService } from './grade.service';
 import { CreateGradeDto } from './dto/create-grade.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Grade')
 @Controller('grade')
@@ -19,6 +19,12 @@ export class GradeController {
   @Post()
   create(@Body() createGradeDto: CreateGradeDto) {
     return this.gradeService.create(createGradeDto);
+  }
+
+  @Post('bulkCreate')
+  @ApiBody({ type: [CreateGradeDto] })
+  createBulk(@Body() createGradeDto: CreateGradeDto[]) {
+    return this.gradeService.bulkCreate(createGradeDto);
   }
 
   @Get()

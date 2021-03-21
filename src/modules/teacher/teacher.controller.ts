@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { TeacherService } from './teacher.service';
 import { CreateTeacherDto } from './dto/create-teacher.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Teacher')
 @Controller('teacher')
@@ -20,6 +20,12 @@ export class TeacherController {
   @Post()
   create(@Body() createTeacherDto: CreateTeacherDto) {
     return this.teacherService.create(createTeacherDto);
+  }
+
+  @Post('bulkCreate')
+  @ApiBody({ type: [CreateTeacherDto] })
+  createBulk(@Body() createTeacherDto: CreateTeacherDto[]) {
+    return this.teacherService.bulkCreate(createTeacherDto);
   }
 
   @Get()

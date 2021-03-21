@@ -22,6 +22,11 @@ export class SubjectService {
     return createOutput(subject);
   }
 
+  async bulkCreate(createSubjectDto: CreateSubjectDto[]) {
+    const subject = await this.subjectRepository.save(createSubjectDto);
+    return createOutput(subject);
+  }
+
   async findAll() {
     const payload = await this.subjectRepository.find();
     return findOutput(payload);
@@ -29,27 +34,16 @@ export class SubjectService {
 
   async findOne(id: string) {
     const payload = await this.subjectRepository.findOne(id);
-    if (!payload) {
-      throw new NotFoundException();
-    }
     return findOutput(payload);
   }
 
   async update(id: string, updateSubjectDto: CreateSubjectDto) {
-    const isExists = await this.subjectRepository.findOne(id);
-    if (!isExists) {
-      throw new NotFoundException();
-    }
     await this.subjectRepository.update(id, updateSubjectDto);
     const payload = await this.subjectRepository.findOne(id);
     return updateOutput(payload);
   }
 
   async remove(id: string) {
-    const isExists = await this.subjectRepository.findOne(id);
-    if (!isExists) {
-      throw new NotFoundException();
-    }
     const deleteSubject = await this.subjectRepository.delete(id);
     return deleteOutput(deleteSubject);
   }

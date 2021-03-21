@@ -1,6 +1,7 @@
+import { TeacherMiddleware } from './teacher.middleware';
 import { Teacher } from './entities/teacher.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { TeacherService } from './teacher.service';
 import { TeacherController } from './teacher.controller';
 
@@ -10,4 +11,14 @@ import { TeacherController } from './teacher.controller';
   controllers: [TeacherController],
   providers: [TeacherService],
 })
-export class TeacherModule {}
+export class TeacherModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(TeacherMiddleware)
+      .forRoutes(
+        { path: 'teacher/:id', method: RequestMethod.GET },
+        { path: 'teacher/:id', method: RequestMethod.DELETE },
+        { path: 'teacher/:id', method: RequestMethod.PATCH },
+      );
+  }
+}

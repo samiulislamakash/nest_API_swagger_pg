@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { SubjectService } from './subject.service';
 import { CreateSubjectDto } from './dto/create-subject.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Subject')
 @Controller('subject')
@@ -19,6 +19,12 @@ export class SubjectController {
   @Post()
   create(@Body() createSubjectDto: CreateSubjectDto) {
     return this.subjectService.create(createSubjectDto);
+  }
+
+  @Post('bulkCreate')
+  @ApiBody({ type: [CreateSubjectDto] })
+  createBulk(@Body() createSubjectDto: CreateSubjectDto[]) {
+    return this.subjectService.bulkCreate(createSubjectDto);
   }
 
   @Get()

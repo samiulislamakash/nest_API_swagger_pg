@@ -1,6 +1,7 @@
+import { GradeMiddleware } from './grade.middleware';
 import { Grade } from 'src/modules/grade/entities/grade.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { GradeService } from './grade.service';
 import { GradeController } from './grade.controller';
 
@@ -10,4 +11,14 @@ import { GradeController } from './grade.controller';
   controllers: [GradeController],
   providers: [GradeService],
 })
-export class GradeModule {}
+export class GradeModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(GradeMiddleware)
+      .forRoutes(
+        { path: 'grade/:id', method: RequestMethod.GET },
+        { path: 'grade/:id', method: RequestMethod.PATCH },
+        { path: 'grade/:id', method: RequestMethod.DELETE },
+      );
+  }
+}

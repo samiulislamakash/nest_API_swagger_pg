@@ -12,6 +12,8 @@ import {
 
 @Injectable()
 export class StudentService {
+  studentRelation: string[] = ['grade', 'teacher'];
+
   constructor(
     @InjectRepository(Student)
     private studentRepository: Repository<Student>,

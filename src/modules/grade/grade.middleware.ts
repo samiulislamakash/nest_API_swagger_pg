@@ -1,18 +1,18 @@
-import { Student } from './entities/student.entity';
+import { Grade } from './entities/grade.entity';
 import { Repository } from 'typeorm';
 import { Injectable, NestMiddleware, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
-export class StudentMiddleware implements NestMiddleware {
+export class GradeMiddleware implements NestMiddleware {
   constructor(
-    @InjectRepository(Student)
-    private studentRepository: Repository<Student>,
+    @InjectRepository(Grade)
+    private gradeRepository: Repository<Grade>,
   ) {}
 
   async use(req: any, res: any, next: () => void) {
     if (req.params.id) {
-      const ifExists = await this.studentRepository.findOne(req.params.id);
+      const ifExists = await this.gradeRepository.findOne(req.params.id);
       if (!ifExists) {
         throw new NotFoundException();
       } else {

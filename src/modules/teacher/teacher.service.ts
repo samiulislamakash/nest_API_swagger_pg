@@ -22,6 +22,11 @@ export class TeacherService {
     return createOutput(payload);
   }
 
+  async bulkCreate(createTeacherDto: CreateTeacherDto[]) {
+    const teacher = await this.teacherRepository.save(createTeacherDto);
+    return createOutput(teacher);
+  }
+
   async findAll() {
     const payload = await this.teacherRepository.find();
     return findOutput(payload);
@@ -29,27 +34,16 @@ export class TeacherService {
 
   async findOne(id: string) {
     const isExists = await this.teacherRepository.findOne(id);
-    if (!isExists) {
-      throw new NotFoundException();
-    }
     return findOutput(isExists);
   }
 
   async update(id: string, updateTeacher: CreateTeacherDto) {
-    const isExists = await this.teacherRepository.findOne(id);
-    if (!isExists) {
-      throw new NotFoundException();
-    }
     await this.teacherRepository.update(id, updateTeacher);
     const payload = await this.teacherRepository.findOne(id);
     return updateOutput(payload);
   }
 
   async remove(id: string) {
-    const isExists = await this.teacherRepository.findOne(id);
-    if (!isExists) {
-      throw new NotFoundException();
-    }
     const deletePayload = await this.teacherRepository.delete(id);
     return deleteOutput(deletePayload);
   }
