@@ -1,19 +1,23 @@
+import { Teacher } from './../../teacher/entities/teacher.entity';
+import { Grade } from './../../grade/entities/grade.entity';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateStudentDto {
   @ApiProperty()
-  firstName: string;
+  firstName?: string;
+
   @ApiProperty()
-  lastName: string;
+  lastName?: string;
+
+  @ApiProperty()
+  phone_number?: string;
+
   @ApiProperty()
   email: string;
-  parantsInfo?: string;
-  @ApiProperty()
-  class: string;
-  @ApiProperty()
-  shift: string;
-  @ApiProperty()
-  department: string;
-  @ApiProperty()
-  phone_number: string;
+
+  @ApiProperty({ required: false })
+  grade?: string;
+
+  @ApiProperty({ required: false })
+  teacher?: string[];
 }

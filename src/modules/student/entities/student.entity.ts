@@ -31,13 +31,13 @@ export class Student {
     () => Grade,
     grede => grede.student,
   )
-  grade?: Grade;
+  grade: Grade;
 
   @ManyToMany(
     () => Teacher,
     teacher => teacher.student,
   )
-  teacher?: Teacher[];
+  teacher: Teacher[];
 
   @CreateDateColumn()
   createdAt: Date;

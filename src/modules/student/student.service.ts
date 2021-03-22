@@ -1,7 +1,6 @@
 import { Repository } from 'typeorm';
 import { Student } from './entities/student.entity';
-import { Injectable } from '@nestjs/common';
-import { CreateStudentDto } from './dto/create-student.dto';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
   createOutput,
@@ -12,35 +11,59 @@ import {
 
 @Injectable()
 export class StudentService {
-  studentRelation: string[] = ['grade', 'teacher'];
+  studentRelation: string[] = ['grade'];
 
   constructor(
     @InjectRepository(Student)
     private studentRepository: Repository<Student>,
   ) {}
 
-  async create(createStudentDto: CreateStudentDto) {
-    const student = await this.studentRepository.save(createStudentDto);
-    return createOutput(student);
+  async create(createStudentDto: any) {
+    try {
+      const student = await this.studentRepository.save(createStudentDto);
+      const newStudent = await this.findOne(student.id);
+      return createOutput(newStudent);
+    } catch (e) {
+      throw new Error();
+    }
   }
 
-  async bulkCreate(createStudentDto: CreateStudentDto[]) {
-    const students = await this.studentRepository.save(createStudentDto);
-    return createOutput(students);
+  async bulkCreate(createStudentDto: any[]) {
+    try {
+      const students = await this.studentRepository.save(createStudentDto);
+      let newDataArry: Student[] = [];
+      for (let i = 0; i < students.length; i++) {
+        const data = await this.studentRepository.findOne(students[i].id, {
+          relations: this.studentRelation,
+        });
+        newDataArry.push(data);
+      }
+      return createOutput(newDataArry);
+    } catch (e) {
+      throw new Error();
+    }
   }
 
   async findAll() {
-    const payload = await this.studentRepository.find();
+    const payload = await this.studentRepository.find({
+      relations: this.studentRelation,
+    });
     return findOutput(payload);
   }
 
   async findOne(id: string) {
-    return findOutput(await this.studentRepository.findOne(id));
+    return findOutput(
+      await this.studentRepository.findOne(id, {
+        relations: this.studentRelation,
+      }),
+    );
   }
 
-  async update(id: string, updateStudentDto: CreateStudentDto) {
+  async update(id: string, updateStudentDto: any) {
     await this.studentRepository.update(id, updateStudentDto);
-    const newData = await this.studentRepository.findOne(id);
+    const newData = await this.studentRepository.findOne(id, {
+      relations: this.studentRelation,
+    });
     return updateOutput(newData);
   }
 
