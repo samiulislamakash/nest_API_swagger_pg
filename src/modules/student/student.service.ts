@@ -1,6 +1,10 @@
 import { Repository } from 'typeorm';
 import { Student } from './entities/student.entity';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
   createOutput,
@@ -11,7 +15,7 @@ import {
 
 @Injectable()
 export class StudentService {
-  studentRelation: string[] = ['grade'];
+  private readonly studentRelation: string[] = ['grade'];
 
   constructor(
     @InjectRepository(Student)
@@ -21,26 +25,28 @@ export class StudentService {
   async create(createStudentDto: any) {
     try {
       const student = await this.studentRepository.save(createStudentDto);
-      const newStudent = await this.findOne(student.id);
+      const newStudent = await this.studentRepository.findOne(student.id, {
+        relations: this.studentRelation,
+      });
       return createOutput(newStudent);
     } catch (e) {
-      throw new Error();
+      throw new InternalServerErrorException();
     }
   }
 
   async bulkCreate(createStudentDto: any[]) {
     try {
       const students = await this.studentRepository.save(createStudentDto);
-      let newDataArry: Student[] = [];
+      let newDataArray: Student[] = [];
       for (let i = 0; i < students.length; i++) {
         const data = await this.studentRepository.findOne(students[i].id, {
           relations: this.studentRelation,
         });
-        newDataArry.push(data);
+        newDataArray.push(data);
       }
-      return createOutput(newDataArry);
+      return createOutput(newDataArray);
     } catch (e) {
-      throw new Error();
+      throw new InternalServerErrorException();
     }
   }
 
