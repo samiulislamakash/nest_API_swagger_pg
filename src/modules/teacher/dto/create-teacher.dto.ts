@@ -1,3 +1,4 @@
+import { Subject } from './../../subject/entities/subject.entity';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateTeacherDto {

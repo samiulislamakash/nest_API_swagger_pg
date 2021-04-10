@@ -3,6 +3,7 @@ import { Student } from './../../student/entities/student.entity';
 import {
   Column,
   CreateDateColumn,
+  JoinTable,
   ManyToMany,
   UpdateDateColumn,
 } from 'typeorm';
@@ -24,15 +25,6 @@ export class Teacher {
 
   @Column()
   email: string;
-
-  @ManyToMany(
-    () => Student,
-    student => student.teacher,
-  )
-  student?: Student[];
-
-  @ManyToMany(() => Subject)
-  subject?: Subject[];
 
   @CreateDateColumn()
   createdAt: Date;

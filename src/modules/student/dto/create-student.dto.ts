@@ -17,7 +17,4 @@ export class CreateStudentDto {
 
   @ApiProperty({ required: false })
   grade?: string;
-
-  @ApiProperty({ required: false })
-  teacher?: string[];
 }

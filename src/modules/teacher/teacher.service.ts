@@ -1,10 +1,6 @@
 import { Teacher } from './entities/teacher.entity';
 import { Repository } from 'typeorm';
-import {
-  Injectable,
-  InternalServerErrorException,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CreateTeacherDto } from './dto/create-teacher.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import {

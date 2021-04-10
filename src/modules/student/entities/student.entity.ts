@@ -1,10 +1,8 @@
-import { Teacher } from './../../teacher/entities/teacher.entity';
 import { Grade } from 'src/modules/grade/entities/grade.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
-  ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -31,13 +29,7 @@ export class Student {
     () => Grade,
     grede => grede.student,
   )
-  grade: Grade;
-
-  @ManyToMany(
-    () => Teacher,
-    teacher => teacher.student,
-  )
-  teacher: Teacher[];
+  grade?: Grade;
 
   @CreateDateColumn()
   createdAt: Date;
