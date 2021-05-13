@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-export class CreateGradeDto {
+export class RefreshTokenUser {
   @ApiProperty()
-  letter: string;
+  token: string;
 }

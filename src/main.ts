@@ -5,7 +5,7 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const swaggerConfig = new DocumentBuilder()
-    .setTitle('School Management')
+    .setTitle('NestJs Api Demo')
     .setDescription('Simple Nest Api Documentation')
     .setVersion('1.0')
     .build();

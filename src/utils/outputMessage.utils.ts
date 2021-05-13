@@ -1,3 +1,5 @@
+import e from 'express';
+
 export function createOutput(createData) {
   const data = {
     success: true,
@@ -16,10 +18,18 @@ export function updateOutput(updateData) {
   return data;
 }
 
-export function findOutput(findData) {
+export function findOutput(
+  findData,
+  total: number,
+  take: number,
+  page: number,
+) {
   const data = {
     success: true,
     message: 'Get Data Successfull.',
+    total,
+    page,
+    take,
     data: findData,
   };
   return data;
@@ -29,6 +39,23 @@ export function deleteOutput(deleteData) {
   const data = {
     success: true,
     message: `Delete ${deleteData.affected} Data Successfull.`,
+  };
+  return data;
+}
+
+export function loginOutput(loginData) {
+  const data = {
+    success: true,
+    message: 'Login Successfull.',
+    token: loginData,
+  };
+  return data;
+}
+
+export function tokenOutput(success: boolean, message: string) {
+  const data = {
+    success,
+    message,
   };
   return data;
 }

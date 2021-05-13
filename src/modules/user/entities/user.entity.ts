@@ -1,26 +1,27 @@
-import { Student } from './../../student/entities/student.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
-  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity('greads')
-export class Grade {
+@Entity('users')
+export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
-  letter: string;
+  @Column({ nullable: false })
+  firstName: string;
 
-  @OneToMany(
-    () => Student,
-    student => student.grade,
-  )
-  student: Student[];
+  @Column()
+  password: string;
+
+  @Column({ nullable: true, default: null })
+  lastName: string;
+
+  @Column({ nullable: false })
+  email: string;
 
   @CreateDateColumn()
   createdAt: Date;

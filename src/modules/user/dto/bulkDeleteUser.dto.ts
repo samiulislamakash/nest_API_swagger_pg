@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CreateSubjectDto {
+export class BulkDeleteUserDto {
   @ApiProperty()
-  name: string;
+  ids: string[];
 }

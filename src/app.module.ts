@@ -1,10 +1,6 @@
-import { Student } from './modules/student/entities/student.entity';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { StudentModule } from './modules/student/student.module';
-import { TeacherModule } from './modules/teacher/teacher.module';
-import { SubjectModule } from './modules/subject/subject.module';
-import { GradeModule } from './modules/grade/grade.module';
+import { UserModule } from './modules/user/user.module';
 
 @Module({
   imports: [
@@ -17,11 +13,9 @@ import { GradeModule } from './modules/grade/grade.module';
       database: 'SchoolManagement',
       autoLoadEntities: true,
       synchronize: true,
+      logging: false,
     }),
-    StudentModule,
-    TeacherModule,
-    SubjectModule,
-    GradeModule,
+    UserModule,
   ],
 })
 export class AppModule {}
