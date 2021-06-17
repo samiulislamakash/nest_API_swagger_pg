@@ -12,20 +12,20 @@ export class User {
   id: string;
 
   @Column({ nullable: false })
-  firstName: string;
+  firstName?: string;
 
   @Column()
-  password: string;
+  password?: string;
 
   @Column({ nullable: true, default: null })
-  lastName: string;
+  lastName?: string;
 
   @Column({ nullable: false })
-  email: string;
+  email?: string;
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt?: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt?: Date;
 }

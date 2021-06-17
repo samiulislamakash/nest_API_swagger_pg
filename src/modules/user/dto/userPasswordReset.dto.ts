@@ -4,8 +4,8 @@ export class UserPasswordResetDto {
   @ApiProperty()
   token: string;
 
-  @ApiProperty()
-  oldPassword: string;
+  // @ApiProperty()
+  // oldPassword: string;
 
   @ApiProperty()
   newPassword: string;

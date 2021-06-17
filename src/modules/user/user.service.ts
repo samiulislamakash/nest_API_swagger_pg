@@ -101,13 +101,13 @@ export class UserService {
         if (!user) {
           return tokenOutput(false, 'Unknown Token!!!');
         }
-        const isMatch = await compairePassword(
-          payload.oldPassword,
-          user.password,
-        );
-        if (!isMatch) {
-          return tokenOutput(false, 'Password Not Match!!!');
-        }
+        // const isMatch = await compairePassword(
+        //   payload.oldPassword,
+        //   user.password,
+        // );
+        // if (!isMatch) {
+        //   return tokenOutput(false, 'Password Not Match!!!');
+        // }
 
         const password = await hashString(payload.newPassword);
         await this.userRepository.update(user.id, { password });
@@ -124,9 +124,6 @@ export class UserService {
     try {
       const decodeValue = await decodeToken(payload.token);
       if (decodeValue.data && decodeValue.exp) {
-        if (decodeValue.exp < Date.now() / 1000) {
-          return tokenOutput(false, 'Token Expire!!!');
-        }
         const user = await this.userRepository.findOne({
           id: decodeValue.data.id,
         });
@@ -172,7 +169,7 @@ export class UserService {
           },
         ];
 
-        const [payload, total] = await this.userRepository.findAndCount({
+        const [list, total] = await this.userRepository.findAndCount({
           select: [
             'id',
             'firstName',
@@ -189,9 +186,9 @@ export class UserService {
           },
         });
 
-        return findOutput(payload, total, take, page + 1);
+        return findOutput(list, total, take, page + 1);
       } else if (!param.searchTerm && Object.keys(param).length > 0) {
-        const [payload, total] = await this.userRepository.findAndCount({
+        const [list, total] = await this.userRepository.findAndCount({
           select: [
             'id',
             'firstName',
@@ -208,9 +205,9 @@ export class UserService {
           },
         });
 
-        return findOutput(payload, total, take, page + 1);
+        return findOutput(list, total, take, page + 1);
       } else {
-        const [payload, total] = await this.userRepository.findAndCount({
+        const [list, total] = await this.userRepository.findAndCount({
           select: [
             'id',
             'firstName',
@@ -226,7 +223,7 @@ export class UserService {
           },
         });
 
-        return findOutput(payload, total, take, page + 1);
+        return findOutput(list, total, take, page + 1);
       }
     } catch (e) {
       return new InternalServerErrorException();

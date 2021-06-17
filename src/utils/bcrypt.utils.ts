@@ -1,6 +1,8 @@
 import * as bcrypt from 'bcrypt';
+import { ENV } from './../env';
+import { toNumber } from './util.function';
 
-const SALT_ROUNDS: number = 10;
+const SALT_ROUNDS: number = toNumber(ENV.bcryptSoltRound);
 
 export async function hashString(pleanText: string) {
   return await bcrypt.hash(pleanText, SALT_ROUNDS);

@@ -28,6 +28,9 @@ export const ENV: any = {
   API_DESC: process.env.API_DESC,
   API_VERSION: process.env.API_VERSION,
 
+  bcryptSoltRound: process.env.BCRYPT_SALT_ROUNDS,
+  jwtSecret: process.env.JWT_SECRET,
+
   postGreDB: {
     type: process.env.TYPEORM_CONNECTION,
     host: process.env.TYPEORM_HOST,
