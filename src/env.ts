@@ -31,6 +31,8 @@ export const ENV: any = {
   bcryptSoltRound: process.env.BCRYPT_SALT_ROUNDS,
   jwtSecret: process.env.JWT_SECRET,
 
+  BASE_UPLOAD_URL: process.env.UPLOAD_BASE_PUBLIC_PATH,
+
   postGreDB: {
     type: process.env.TYPEORM_CONNECTION,
     host: process.env.TYPEORM_HOST,

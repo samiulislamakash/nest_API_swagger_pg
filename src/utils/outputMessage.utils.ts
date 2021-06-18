@@ -59,3 +59,7 @@ export function tokenOutput(success: boolean, message: string) {
   };
   return data;
 }
+
+export function commonOutput(message: string, data: Object) {
+  return { message, data };
+}

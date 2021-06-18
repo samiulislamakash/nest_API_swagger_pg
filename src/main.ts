@@ -8,6 +8,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.use(helmet());
   app.setGlobalPrefix(ENV.API_PREFIX);
+  app.enableCors();
   const swaggerConfig = new DocumentBuilder()
     .setTitle(ENV.API_TITLE)
     .setDescription(ENV.API_DESC)
