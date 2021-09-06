@@ -1,5 +1,5 @@
 import * as bcrypt from 'bcrypt';
-import { ENV } from './../env';
+import { ENV } from '../env';
 import { toNumber } from './util.function';
 
 const SALT_ROUNDS: number = toNumber(ENV.bcryptSoltRound);

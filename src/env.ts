@@ -1,6 +1,6 @@
 import { config } from 'dotenv';
 import * as path from 'path';
-import { toBool } from './utils/util.function';
+import { toBool } from './@utils/util.function';
 
 config({
   path: path.join(
