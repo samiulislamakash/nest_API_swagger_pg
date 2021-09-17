@@ -76,7 +76,6 @@ export class DepartmentService {
           },
           relations: this.relation,
         });
-
         return findOutput(payload, count, take, page + 1);
       } else {
         const [payload, count] = await this.departmentRepository.findAndCount({

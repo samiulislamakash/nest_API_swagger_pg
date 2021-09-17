@@ -11,6 +11,7 @@ import {
   Param,
   Delete,
   Query,
+  Patch,
 } from '@nestjs/common';
 import { DepartmentService } from './department.service';
 import { CreateDepartmentDto } from './dto/create-department.dto';
@@ -37,12 +38,12 @@ export class DepartmentController {
     return this.departmentService.filter(param);
   }
 
-  @Put('bulkUpdate')
+  @Patch('bulkUpdate')
   bulkUpdate(@Body() payload: BulkUploadDepartment) {
     return this.departmentService.bulkUpdate(payload);
   }
 
-  @Put(':id')
+  @Patch(':id')
   update(@Param('id') id: string, @Body() payload: UpdateDepartmentDto) {
     return this.departmentService.update(id, payload);
   }
