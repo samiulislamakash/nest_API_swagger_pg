@@ -1,15 +1,15 @@
-import { Category } from 'src/@modules/category/entities/category.entity';
+import { Department } from './../../department/entities/department.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
-  OneToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity('departments')
-export class Department {
+@Entity('categorys')
+export class Category {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -28,9 +28,9 @@ export class Department {
   @Column({ nullable: true, default: null })
   thumb?: string;
 
-  @OneToMany(
-    () => Category,
-    category => category.department,
+  @ManyToOne(
+    () => Department,
+    department => department.category,
   )
-  category?: Category[];
+  department?: Department;
 }
