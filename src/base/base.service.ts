@@ -5,7 +5,7 @@ import {
   findOutput,
   getByIdOutput,
   updateOutput,
-} from 'src/utils/outputMessage.utils';
+} from 'src/@utils/outputMessage.utils';
 import { Repository, ILike } from 'typeorm';
 
 export abstract class BaseService<Entity> extends Repository<Entity> {
