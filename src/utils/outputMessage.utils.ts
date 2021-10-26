@@ -60,6 +60,14 @@ export function tokenOutput(success: boolean, message: string) {
   return data;
 }
 
+export function getByIdOutput(findData) {
+  const data = {
+    success: true,
+    message: 'Get Data Successfull.',
+    data: findData,
+  };
+}
+
 export function commonOutput(message: string, data: Object) {
   return { message, data };
 }
