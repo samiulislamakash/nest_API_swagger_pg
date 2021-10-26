@@ -18,9 +18,9 @@ import {
   updateOutput,
   loginOutput,
   tokenOutput,
-} from 'src/utils/outputMessage.utils';
-import { hashString, compairePassword } from '../../utils/bcrypt.utils';
-import { generateToken, decodeToken } from '../../utils/jwt.utils';
+} from 'src/@utils/outputMessage.utils';
+import { hashString, compairePassword } from '../../@utils/bcrypt.utils';
+import { generateToken, decodeToken } from '../../@utils/jwt.utils';
 
 @Injectable()
 export class UserService {
