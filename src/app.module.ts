@@ -5,6 +5,7 @@ import { UserModule } from './@modules/user/user.module';
 import { UtilsModule } from './@utils/utils.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { ProductModule } from './@modules/product/product.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { join } from 'path';
     }),
     UserModule,
     UtilsModule,
+    ProductModule,
   ],
 })
 export class AppModule {}
