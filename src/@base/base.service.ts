@@ -6,7 +6,7 @@ import {
   getByIdOutput,
   updateOutput,
 } from 'src/@utils/outputMessage.utils';
-import { Repository, ILike } from 'typeorm';
+import { Repository, ILike, FindManyOptions } from 'typeorm';
 
 export abstract class BaseService<Entity> extends Repository<Entity> {
   _repository: Repository<Entity>;
@@ -73,6 +73,36 @@ export abstract class BaseService<Entity> extends Repository<Entity> {
   }
 
   async _filter(param: any, relations?: string[]) {
+    // try {
+    //   let options: FindManyOptions;
+    //   const take = param.take && param.take > 0 ? +param.take : 10;
+    //   const page = param.page && param.page > 0 ? +param.page - 1 : 0;
+    //   const skip = page * take;
+    //   options.relations = relations;
+    //   options.order = {
+    //     updatedAt: 'DESC',
+    //   };
+    //   delete param.take;
+    //   delete param.page;
+
+    //   if (Object.keys(param).includes('searchTerm')) {
+    //     const searchTerm = param.searchTerm;
+    //     options.where = [
+    //       {
+    //         name: ILike(`%${searchTerm}%`),
+    //       },
+    //     ];
+    //     const [payload, count] = await this._repository.findAndCount(options);
+    //     return findOutput(payload, count, take, page + 1);
+    //   } else {
+    //     const [payload, count] = await this._repository.findAndCount(options);
+    //     return findOutput(payload, count, take, page + 1);
+    //   }
+    // } catch (e) {
+    //   console.error(e);
+    //   return new InternalServerErrorException();
+    // }
+
     try {
       const take = param.take && param.take > 0 ? +param.take : 10;
       const page = param.page && param.page > 0 ? +param.page - 1 : 0;

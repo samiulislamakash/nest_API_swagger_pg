@@ -1,4 +1,4 @@
-import { ApiTags } from '@nestjs/swagger';
+import { ApiTags, ApiBody } from '@nestjs/swagger';
 import { BulkUpdateProductDto } from './dto/bulk-update-product.dto';
 import {
   Controller,
@@ -19,7 +19,7 @@ import { Filter } from 'src/@base/dto/filter.dto';
 @ApiTags('Product')
 @Controller('product')
 export class ProductController {
-  modelRelations: string[] = [''];
+  modelRelations: string[] = [];
 
   constructor(private readonly productService: ProductService) {}
 
@@ -29,12 +29,14 @@ export class ProductController {
   }
 
   @Post('bulkCreate')
+  @ApiBody({ type: [CreateProductDto] })
   bulkCreate(@Body() payload: CreateProductDto[]): Promise<any> {
     return this.productService._bulkCreate(payload, this.modelRelations);
   }
 
   @Patch('bulkUpdate')
   bulkUpdate(@Body() payload: BulkUpdateProductDto): Promise<any> {
+    console.log(payload);
     return this.productService._bulkUpdate(payload, this.modelRelations);
   }
 
@@ -45,16 +47,20 @@ export class ProductController {
 
   @Get()
   filter(@Query() query: Filter): Promise<any> {
+    console.log(query);
     return this.productService._filter(query, this.modelRelations);
   }
 
   @Get(':id')
-  getById(@Param() id: string): Promise<any> {
+  getById(@Param('id') id: string): Promise<any> {
     return this.productService._getById(id, this.modelRelations);
   }
 
   @Patch(':id')
-  update(@Param() id: string, @Body() payload: UpdateProductDto): Promise<any> {
+  update(
+    @Param('id') id: string,
+    @Body() payload: UpdateProductDto,
+  ): Promise<any> {
     return this.productService._update(id, payload, this.modelRelations);
   }
 

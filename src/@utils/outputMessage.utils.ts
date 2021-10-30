@@ -66,6 +66,7 @@ export function getByIdOutput(findData) {
     message: 'Get Data Successfull.',
     data: findData,
   };
+  return data;
 }
 
 export function commonOutput(message: string, data: Object) {
