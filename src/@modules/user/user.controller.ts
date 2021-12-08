@@ -1,3 +1,4 @@
+import { commonResponse } from 'src/@utils/outputResponse.utils';
 import { filterUser } from './dto/filterUser.dto';
 import { RefreshTokenUser } from './dto/refreshTokenUser.dto';
 import { UserPasswordResetDto } from './dto/userPasswordReset.dto';
@@ -25,53 +26,125 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  create(@Body() payload: UserDto) {
-    return this.userService.create(payload);
+  async create(@Body() payload: UserDto) {
+    try {
+      return commonResponse(
+        true,
+        'User Create Successfull.',
+        await this.userService.create(payload),
+      );
+    } catch (e) {
+      return commonResponse(false, 'User Create Error', e);
+    }
   }
 
   @Post('bulkCreate')
   @ApiBody({ type: [UserDto] })
-  bulkCreate(@Body() payload: UserDto[]) {
-    return this.userService.bulkCreate(payload);
+  async bulkCreate(@Body() payload: UserDto[]) {
+    try {
+      return commonResponse(
+        true,
+        'User Bulk Create Successfull.',
+        await this.userService.bulkCreate(payload),
+      );
+    } catch (e) {
+      return commonResponse(false, 'User Bulk Create Error', e);
+    }
   }
 
   @Post('login')
-  login(@Body() payload: UserLoginDto) {
-    return this.userService.login(payload);
+  async login(@Body() payload: UserLoginDto) {
+    try {
+      return commonResponse(
+        true,
+        'User Login Successfull.',
+        await this.userService.login(payload),
+      );
+    } catch (e) {
+      return commonResponse(false, 'User Login Error', e);
+    }
   }
 
   @Post('resetPassword')
-  resetPassword(@Body() payload: UserPasswordResetDto) {
-    return this.userService.resetPassword(payload);
+  async resetPassword(@Body() payload: UserPasswordResetDto) {
+    try {
+      return await this.userService.resetPassword(payload);
+    } catch (e) {
+      return commonResponse(false, 'User Reset Password Error', e);
+    }
   }
 
   @Post('refreshToken')
-  refreshToken(@Body() payload: RefreshTokenUser) {
-    return this.userService.refreshToken(payload);
+  async refreshToken(@Body() payload: RefreshTokenUser) {
+    try {
+      return await this.userService.refreshToken(payload);
+    } catch (e) {
+      return commonResponse(false, 'User Refresh Token Error', e);
+    }
   }
 
   @Get()
-  filter(@Query() param: filterUser) {
-    return this.userService.filter(param);
+  async filter(@Query() param: filterUser) {
+    try {
+      return commonResponse(
+        true,
+        'User Filter Successfull.',
+        await this.userService.filter(param),
+      );
+    } catch (e) {
+      return commonResponse(false, 'User Filer Error', e);
+    }
   }
 
   @Put('bulkUpdate')
-  bulkUpdate(@Body() payload: BulkUpdateUserDto) {
-    return this.userService.bulkUpdate(payload);
+  async bulkUpdate(@Body() payload: BulkUpdateUserDto) {
+    try {
+      return commonResponse(
+        true,
+        'User Bulk Update Successfull.',
+        await this.userService.bulkUpdate(payload),
+      );
+    } catch (e) {
+      return commonResponse(false, 'User Bulk Update Error', e);
+    }
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() payload: UserUpdateDto) {
-    return this.userService.update(id, payload);
+  async update(@Param('id') id: string, @Body() payload: UserUpdateDto) {
+    try {
+      return commonResponse(
+        true,
+        'User Update Successfull.',
+        await this.userService.update(id, payload),
+      );
+    } catch (e) {
+      return commonResponse(false, 'User Update Error', e);
+    }
   }
 
   @Delete('bulkDelete')
-  bulkDelete(@Body() payload: BulkDeleteUserDto) {
-    return this.userService.bulkRemove(payload.ids);
+  async bulkDelete(@Body() payload: BulkDeleteUserDto) {
+    try {
+      return commonResponse(
+        true,
+        'User Bulk Delete Successfull.',
+        await this.userService.bulkRemove(payload.ids),
+      );
+    } catch (e) {
+      return commonResponse(false, 'User Bulk Delete Error', e);
+    }
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(id);
+  async remove(@Param('id') id: string) {
+    try {
+      return commonResponse(
+        true,
+        'User Delete Successfull.',
+        await this.userService.remove(id),
+      );
+    } catch (e) {
+      return commonResponse(false, 'User Delete Error', e);
+    }
   }
 }

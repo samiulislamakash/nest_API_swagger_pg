@@ -1,26 +1,17 @@
-import { filterUser } from './dto/filterUser.dto';
 import { RefreshTokenUser } from './dto/refreshTokenUser.dto';
 import { UserPasswordResetDto } from './dto/userPasswordReset.dto';
 import { BulkUpdateUserDto } from './dto/bulkUpdateUser.dto';
 import { User } from './entities/user.entity';
-import { getRepository, ILike, Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 import {
   BadRequestException,
   Injectable,
-  InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import {
-  createOutput,
-  deleteOutput,
-  findOutput,
-  updateOutput,
-  loginOutput,
-  tokenOutput,
-} from 'src/@utils/outputMessage.utils';
 import { hashString, compairePassword } from '../../@utils/bcrypt.utils';
 import { generateToken, decodeToken } from '../../@utils/jwt.utils';
+import { commonResponse } from 'src/@utils/outputResponse.utils';
 
 @Injectable()
 export class UserService {
@@ -42,9 +33,9 @@ export class UserService {
         relations: this.userRelation,
       });
       delete newUser.password;
-      return createOutput(newUser);
+      return newUser;
     } catch (e) {
-      throw new InternalServerErrorException();
+      throw e;
     }
   }
 
@@ -64,9 +55,9 @@ export class UserService {
         delete data.password;
         newDataArray.push(data);
       }
-      return createOutput(newDataArray);
+      return newDataArray;
     } catch (e) {
-      throw new InternalServerErrorException();
+      throw e;
     }
   }
 
@@ -82,9 +73,9 @@ export class UserService {
       }
       delete user.password;
       const token = await generateToken(user);
-      return loginOutput(token);
+      return token;
     } catch (e) {
-      throw new InternalServerErrorException();
+      throw e;
     }
   }
 
@@ -93,30 +84,23 @@ export class UserService {
       const decodeValue = await decodeToken(payload.token);
       if (decodeValue.data && decodeValue.exp) {
         if (decodeValue.exp < Date.now() / 1000) {
-          return tokenOutput(false, 'Token Expire!!!');
+          return commonResponse(false, 'Token Expire!!!', {});
         }
         const user = await this.userRepository.findOne({
           id: decodeValue.data.id,
         });
         if (!user) {
-          return tokenOutput(false, 'Unknown Token!!!');
+          return commonResponse(false, 'Unknown Token!!!', {});
         }
-        // const isMatch = await compairePassword(
-        //   payload.oldPassword,
-        //   user.password,
-        // );
-        // if (!isMatch) {
-        //   return tokenOutput(false, 'Password Not Match!!!');
-        // }
 
         const password = await hashString(payload.newPassword);
         await this.userRepository.update(user.id, { password });
-        return tokenOutput(true, 'Password updated ..');
+        return commonResponse(true, 'Password updated ..', {});
       } else {
-        return tokenOutput(false, 'Unknown Token!!!');
+        return commonResponse(false, 'Unknown Token!!!', {});
       }
     } catch (e) {
-      throw new InternalServerErrorException();
+      throw e;
     }
   }
 
@@ -128,17 +112,17 @@ export class UserService {
           id: decodeValue.data.id,
         });
         if (!user) {
-          return tokenOutput(false, 'Unknown Token!!!');
+          return commonResponse(false, 'Unknown Token!!!', {});
         }
 
         delete user.password;
         const token = await generateToken(user);
-        return loginOutput(token);
+        return commonResponse(true, 'Refresh Token Successfull.', token);
       } else {
-        return tokenOutput(false, 'Unknown Token!!!');
+        return commonResponse(false, 'Unknown Token!!!', {});
       }
     } catch (e) {
-      throw new InternalServerErrorException();
+      throw e;
     }
   }
 
@@ -169,7 +153,7 @@ export class UserService {
           },
         ];
 
-        const [list, total] = await this.userRepository.findAndCount({
+        const [payload, total] = await this.userRepository.findAndCount({
           select: [
             'id',
             'firstName',
@@ -185,10 +169,15 @@ export class UserService {
             updatedAt: 'DESC',
           },
         });
-
-        return findOutput(list, total, take, page + 1);
+        let data = {
+          payload,
+          total,
+          take,
+          page: page + 1,
+        };
+        return data;
       } else if (!param.searchTerm && Object.keys(param).length > 0) {
-        const [list, total] = await this.userRepository.findAndCount({
+        const [payload, total] = await this.userRepository.findAndCount({
           select: [
             'id',
             'firstName',
@@ -204,10 +193,15 @@ export class UserService {
             updatedAt: 'DESC',
           },
         });
-
-        return findOutput(list, total, take, page + 1);
+        let data = {
+          payload,
+          total,
+          take,
+          page: page + 1,
+        };
+        return data;
       } else {
-        const [list, total] = await this.userRepository.findAndCount({
+        const [payload, total] = await this.userRepository.findAndCount({
           select: [
             'id',
             'firstName',
@@ -222,23 +216,27 @@ export class UserService {
             updatedAt: 'DESC',
           },
         });
-
-        return findOutput(list, total, take, page + 1);
+        let data = {
+          payload,
+          total,
+          take,
+          page: page + 1,
+        };
+        return data;
       }
     } catch (e) {
-      return new InternalServerErrorException();
+      throw e;
     }
   }
 
   async update(id: string, payload: any) {
     try {
       await this.userRepository.update(id, payload);
-      const newData = await this.userRepository.findOne(id, {
+      return await this.userRepository.findOne(id, {
         relations: this.userRelation,
       });
-      return updateOutput(newData);
     } catch (e) {
-      return new InternalServerErrorException();
+      throw e;
     }
   }
 
@@ -253,27 +251,25 @@ export class UserService {
         });
         updateDataArray.push(data);
       }
-      return updateOutput(updateDataArray);
+      return updateDataArray;
     } catch (e) {
-      throw new InternalServerErrorException();
+      throw e;
     }
   }
 
   async remove(id: string) {
     try {
-      const deleteUser = await this.userRepository.delete(id);
-      return deleteOutput(deleteUser);
+      return await this.userRepository.delete(id);
     } catch (e) {
-      throw new InternalServerErrorException();
+      throw e;
     }
   }
 
   async bulkRemove(ids: string[]) {
     try {
-      const deleteUser = await this.userRepository.delete(ids);
-      return deleteOutput(deleteUser);
+      return await this.userRepository.delete(ids);
     } catch (e) {
-      throw new InternalServerErrorException();
+      throw e;
     }
   }
 }

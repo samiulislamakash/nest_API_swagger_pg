@@ -3,9 +3,6 @@ export class Filter {
   @ApiProperty({ example: 'Anything', required: false })
   searchTerm: string;
 
-  @ApiProperty({ example: 'uuid', required: false })
-  id: string;
-
   @ApiProperty({ example: 10, required: false })
   take: number;
 

@@ -7,7 +7,7 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { ENV } from '../../env';
-import { commonOutput } from '../outputMessage.utils';
+import { commonResponse } from '../outputResponse.utils';
 import { storageOptions } from '../util.function';
 
 @Controller('upload')
@@ -35,6 +35,6 @@ export class ImageUploadController {
     const data = {
       link: `${this.imageBasePublicPath}${file.filename}`,
     };
-    return commonOutput('Image Upload Success', data);
+    return commonResponse(true, 'Image Upload Success', data);
   }
 }
