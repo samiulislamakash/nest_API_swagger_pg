@@ -2,7 +2,7 @@
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
 </p>
 
-  <p align="center">I Use <a href="http://nodejs.org" target="blank">Node.js</a> for building efficient and scalable server-side applications / Api Application, heavily inspired by <a href="https://angular.io" target="blank">Angular</a>.</p>
+  <p align="center">In this porject i am using nest js framework simpley do some basic curd with postgres database.</p>
     <p align="center">
 
 ## Installation
